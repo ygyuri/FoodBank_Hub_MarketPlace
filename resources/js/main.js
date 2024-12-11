@@ -9,4 +9,12 @@ const app = createApp(App);
 app.use(router);                      // Use Vue Router
 app.use(createPinia());               // Use Pinia for state management
 app.use(Antd);                        // Use Ant Design Vue UI Library
+
+
+// Initialize Google OAuth
+app.use(googleAuth, {
+    clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID, // Load Google Client ID from .env
+  });
+
+  
 app.mount('#app');

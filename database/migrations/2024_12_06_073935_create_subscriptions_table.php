@@ -13,12 +13,18 @@ return new class extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('foodbank_id')->constrained('users')->onDelete('cascade'); // References the `users` table for foodbanks
+            $table->foreignId('foodbank_id')
+                ->constrained('users')  // Reference the `users` table for foodbanks
+                ->onDelete('cascade');  // Automatically delete subscriptions if the foodbank is deleted
             $table->enum('status', ['trial', 'active', 'expired'])->default('trial');
             $table->timestamp('trial_ends_at')->nullable();
             $table->timestamp('subscription_ends_at')->nullable();
-            $table->decimal('monthly_fee', 8, 2)->default(0);
+            $table->decimal('monthly_fee', 8, 2)->default(0);  // Decimal format for the monthly fee
             $table->timestamps();
+
+            // Index for performance (queries based on `foodbank_id` or `status`)
+            $table->index('foodbank_id');
+            $table->index('status');
         });
     }
 

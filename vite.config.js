@@ -1,11 +1,18 @@
 import { defineConfig } from 'vite';
-import laravel from 'laravel-vite-plugin';
+import vue from '@vitejs/plugin-vue';
+import { createStyleImportPlugin } from 'vite-plugin-style-import'; // Use named import
 
 export default defineConfig({
-    plugins: [
-        laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
-            refresh: true,
-        }),
-    ],
+  plugins: [
+    vue(),
+    createStyleImportPlugin({
+      libs: [
+        {
+          libraryName: 'ant-design-vue',
+          esModule: true,
+          resolveStyle: (name) => `ant-design-vue/es/${name}/style/index`,
+        },
+      ],
+    }),
+  ],
 });

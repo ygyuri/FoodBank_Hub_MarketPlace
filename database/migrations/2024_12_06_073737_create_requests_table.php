@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('requests', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('foodbank_id')->constrained('users')->onDelete('cascade');
-            $table->string('type');
-            $table->integer('quantity');
+            $table->foreignId('foodbank_id')->constrained('users')->onDelete('cascade');  // Ensure a foreign key constraint for the 'foodbank_id'
+            $table->enum('type', ['food', 'supplies', 'monetary']); // Enum to specify request types
+            $table->integer('quantity')->unsigned();  // Ensuring quantity is a positive number
             $table->timestamps();
+            $table->softDeletes();  // Soft delete field to mark the record as deleted instead of removing it completely
         });
     }
 
