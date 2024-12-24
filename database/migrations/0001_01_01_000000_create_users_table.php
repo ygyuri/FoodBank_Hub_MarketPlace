@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('phone', 15)->nullable()->unique(); // Optional phone number
             $table->enum('role', ['admin', 'foodbank', 'donor', 'recipient'])->default('recipient')->index(); // Indexed for query performance
             $table->string('profile_picture')->nullable(); // To store URLs for user profile images
-            $table->string('google_id')->nullable()->unique(); // To support Google OAuth
+            // $table->string('google_id')->nullable()->unique(); // To support Google OAuth
             $table->rememberToken();
             $table->softDeletes(); // For logical deletes
             $table->timestamps();

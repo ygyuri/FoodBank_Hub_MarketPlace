@@ -1,12 +1,15 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
-// routes/api.php
 
-use App\Http\Controllers\Auth\Google_OAuth_Controller;
+use App\Http\Controllers\Auth\AuthController;
 
-// Redirect to Google OAuth
-Route::get('auth/google', [Google_OAuth_Controller::class, 'redirectToGoogle']);
-
-// Handle the Google OAuth callback
-Route::get('auth/google/callback', [Google_OAuth_Controller::class, 'handleGoogleCallback']);
+// Authentication Routes
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', [AuthController::class, 'user']);
+});

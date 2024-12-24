@@ -1,21 +1,31 @@
+import '../css/app.css';
 import './bootstrap';
-import { createApp } from 'vue';
-import App from './App.vue';
-import router from './router';
-import { createPinia } from 'pinia';  // or 'vuex'
-import Antd from 'ant-design-vue';    // or Headless UI
-import 'ant-design-vue/dist/antd.less';  // Import Ant Design LESS styles
 
+import { createInertiaApp } from '@inertiajs/vue3';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { createApp, h } from 'vue';
+import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
- // This will use the alias defined in vite.config.js
+const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
+// Configure Inertia and integrate Vue 3
+createInertiaApp({
+    title: (title) => `${title} - ${appName}`,
+    resolve: (name) =>
+        resolvePageComponent(
+            `./Pages/${name}.vue`,
+            import.meta.glob('./Pages/**/*.vue')
+        ),
+    setup({ el, App, props, plugin }) {
+        const vueApp = createApp({ render: () => h(App, props) })
+            .use(plugin)
+            .use(ZiggyVue); // Ziggy for handling routes if needed
 
+        vueApp.mount(el);
 
-
- // Ant Design styles (if using Ant Design)
-
-const app = createApp(App);
-app.use(router);                      // Use Vue Router
-app.use(createPinia());               // Use Pinia for state management
-app.use(Antd);                        // Use Ant Design Vue UI Library
-app.mount('#app');
+        return vueApp;
+    },
+    progress: {
+        color: '#4B5563',
+    },
+});
